@@ -1,3 +1,4 @@
+import 'package:app_academico/features/student/pages/students.home.page.dart';
 import 'package:app_academico/features/student/providers/student.provider.dart';
 import 'package:app_academico/features/student/subject/pages/subject.page.dart';
 import 'package:go_router/go_router.dart';
@@ -20,11 +21,19 @@ ShellRoute(
 builder: (context, state, child) {
 return AppShellWidget(child: child);
 },
+
 routes: [
+
 GoRoute(
 path: '/home',
 builder: (context, state) {
 return const HomePage();
+},
+),
+GoRoute(
+path: '/students',
+builder: (context, state) {
+return const StudentsHomePage();
 },
 ),
 GoRoute(

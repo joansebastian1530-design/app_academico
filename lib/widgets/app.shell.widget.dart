@@ -40,7 +40,7 @@ case 0:
 context.go('/home');
 break;
 case 1:
-context.go('/students');
+context.push('/students');
 break;
 case 2:
 context.go('/subjects');
