@@ -19,24 +19,21 @@ class StudentDetailPage extends StatelessWidget {
     final studentId = int.tryParse(id);
 
     /// Buscar estudiante
-    final Student? student = studentId != null
-        ? provider.getById(studentId)
-        : null;
+    final Student? student =
+        studentId != null ? provider.getById(studentId) : null;
 
     /// Si no existe
     if (student == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Estudiante')),
+        appBar: AppBar(title: const Text('Nuevo Estudiante')),
         body: const Center(child: Text('Estudiante no encontrado')),
       );
     }
 
     return Scaffold(
       appBar: AppBar(title: Text('${student.firstName} ${student.lastName}')),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -112,5 +109,3 @@ class _infoTile extends StatelessWidget {
     );
   }
 }
-
-

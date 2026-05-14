@@ -3,7 +3,6 @@ import '../models/student.model.dart';
 import '../repositories/student.repository.dart';
 
 class StudentProvider extends ChangeNotifier {
-  
   final StudentRepository _repository = StudentRepository();
 
   List<Student> _students = [];
