@@ -1,3 +1,4 @@
+import 'package:app_academico/features/carrer/providers/career.provider.dart';
 import 'package:app_academico/features/student/subject/providers/subject.provider.dart';
 import 'package:flutter/material.dart';
 import 'app.widget.dart';
@@ -16,6 +17,9 @@ void main() {
           create: (_) =>
               SubjectProvider()..loadSubjects(),
         ),
+        ChangeNotifierProvider(
+      create: (_) => CareerProvider()..loadCareers(),
+    ),
 
       ],
       child: const AppWidget(),

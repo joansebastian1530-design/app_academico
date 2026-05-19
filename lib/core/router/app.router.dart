@@ -1,88 +1,73 @@
-import 'package:app_academico/features/student/models/student.model.dart';
-import 'package:app_academico/features/student/pages/students.form.page.dart';
-import 'package:app_academico/features/student/pages/students.home.page.dart';
-import 'package:app_academico/features/student/providers/student.provider.dart';
-import 'package:app_academico/features/student/subject/pages/subject.page.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import '../../pages/chat.page.dart';
-import '../../pages/home.page.dart';
-import '../../pages/profile.page.dart';
-import '../../features/student/pages/students.detail.page.dart';
-import '../../features/student/pages/students.page.dart';
-import '../../features/student/subject/pages/subject.detail.page.dart';
-import '../../pages/subject.chat.page.dart';
-import '../../widgets/app.shell.widget.dart';
+
+import 'package:app_academico/features/student/models/student.model.dart';
+
+import 'package:app_academico/features/student/pages/students.home.page.dart';
+import 'package:app_academico/features/student/pages/students.detail.page.dart';
+import 'package:app_academico/features/student/pages/students.form.page.dart';
+
+import 'package:app_academico/features/student/subject/pages/subject.page.dart';
+import 'package:app_academico/features/student/subject/pages/subject.detail.page.dart';
+
+import 'package:app_academico/pages/chat.page.dart';
+import 'package:app_academico/pages/home.page.dart';
+import 'package:app_academico/pages/profile.page.dart';
+import 'package:app_academico/pages/subject.chat.page.dart';
+
+import 'package:app_academico/widgets/app.shell.widget.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/home',
+
   routes: [
     /// ===================================
-    /// SHELL ROUTE
+    /// SHELL
     /// ===================================
     ShellRoute(
       builder: (context, state, child) {
         return AppShellWidget(child: child);
       },
+
       routes: [
+        /// HOME
         GoRoute(
           path: '/home',
           builder: (context, state) {
             return const HomePage();
           },
         ),
-        GoRoute(
-          path: '/students',
-          builder: (context, state) {
-            return const StudentsHomePage();
-          },
-        ),
-        GoRoute(
-          path: '/student/home',
-          builder: (context, state) {
-            final student = state.extra as Student?;
-            return StudentsFormPage(student: student);
-          },
-        ),
-        GoRoute(
-          path: '/students/form',
-          builder: (context, state) {
-            return const StudentsFormPage();
-          },
-        ),
-        GoRoute(
-          path: '/students',
-          builder: (context, state) {
-            return const StudentsPage();
-          },
-        ),
-        GoRoute(
-          path: '/subjects',
-          builder: (context, state) {
-            return const SubjectsPage();
-          },
-        ),
+
+        /// PROFILE
         GoRoute(
           path: '/profile',
           builder: (context, state) {
             return const ProfilePage();
           },
         ),
+
+        /// STUDENTS
         GoRoute(
           path: '/students',
           builder: (context, state) {
-            return ChangeNotifierProvider(
-              create: (_) => StudentProvider()..loadStudents(),
-              child: const StudentsPage(),
-            );
+            return const StudentsHomePage();
+          },
+        ),
+
+        /// SUBJECTS
+        GoRoute(
+          path: '/subjects',
+          builder: (context, state) {
+            return const SubjectsPage();
           },
         ),
       ],
     ),
 
     /// ===================================
-    /// RUTAS FULLSCREEN
+    /// FULLSCREEN ROUTES
     /// ===================================
+
+    /// DETAIL STUDENT
     GoRoute(
       path: '/student/:id',
       builder: (context, state) {
@@ -90,6 +75,17 @@ final GoRouter appRouter = GoRouter(
         return StudentDetailPage(id: id);
       },
     ),
+
+    /// FORM STUDENT
+    GoRoute(
+      path: '/students/form',
+      builder: (context, state) {
+        final student = state.extra as Student?;
+        return StudentsFormPage(student: student);
+      },
+    ),
+
+    /// DETAIL SUBJECT
     GoRoute(
       path: '/subject/:id',
       builder: (context, state) {
@@ -97,12 +93,16 @@ final GoRouter appRouter = GoRouter(
         return SubjectDetailPage(id: id);
       },
     ),
+
+    /// SUBJECT CHAT
     GoRoute(
       path: '/subject-chat',
       builder: (context, state) {
         return const SubjectChatPage();
       },
     ),
+
+    /// CHAT
     GoRoute(
       path: '/chat',
       builder: (context, state) {
