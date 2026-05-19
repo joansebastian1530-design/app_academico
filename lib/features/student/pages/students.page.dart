@@ -9,7 +9,6 @@ class StudentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     /// ESCUCHA EL PROVIDER
     final students = context.watch<StudentProvider>().students;
 
@@ -33,7 +32,14 @@ class StudentsPage extends StatelessWidget {
       itemBuilder: (context, index) {
         final student = students[index];
 
-        return _StudentCard(nombre: "${student.firstName} ${student.lastName}", id: student.id);
+        return _StudentCard(
+          nombre:
+              "${student.student.firstName} ${student.student.lastName}",
+
+          carrera: student.career.name,
+
+          id: student.student.id,
+        );
       },
     );
   }
@@ -41,9 +47,14 @@ class StudentsPage extends StatelessWidget {
 
 class _StudentCard extends StatelessWidget {
   final String nombre;
+  final String carrera;
   final int id;
 
-  const _StudentCard({required this.nombre, required this.id});
+  const _StudentCard({
+    required this.nombre,
+    required this.carrera,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +65,9 @@ class _StudentCard extends StatelessWidget {
 
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,6 +78,7 @@ class _StudentCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(16),
                 ),
+
                 child: Container(
                   width: double.infinity,
                   color: Colors.indigo.shade100,
@@ -81,10 +95,14 @@ class _StudentCard extends StatelessWidget {
             /// INFORMACIÓN
             Padding(
               padding: const EdgeInsets.all(12),
+
               child: Column(
                 children: [
                   Text(
                     nombre,
+
+                    textAlign: TextAlign.center,
+
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -93,9 +111,12 @@ class _StudentCard extends StatelessWidget {
 
                   const SizedBox(height: 4),
 
-                  const Text(
-                    'Estudiante',
-                    style: TextStyle(color: Colors.grey),
+                  Text(
+                    carrera,
+
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
@@ -106,4 +127,3 @@ class _StudentCard extends StatelessWidget {
     );
   }
 }
-

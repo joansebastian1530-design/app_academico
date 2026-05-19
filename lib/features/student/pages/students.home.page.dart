@@ -2,7 +2,6 @@ import 'package:app_academico/features/student/models/student.model.dart';
 import 'package:app_academico/features/student/pages/students.page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 class StudentsHomePage extends StatelessWidget {
   const StudentsHomePage({Key? key}) : super(key: key);

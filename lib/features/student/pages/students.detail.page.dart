@@ -31,7 +31,28 @@ class StudentDetailPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('${student.firstName} ${student.lastName}')),
+      appBar: AppBar(
+        title: Text('${student.firstName} ${student.lastName}'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () async {
+              final result = await context.push(
+                '/students/form',
+                extra: student,
+              );
+
+              if (result == true) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Estudiante actualizado'),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
