@@ -3,49 +3,74 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 import '../providers/student.provider.dart';
-import '../models/student.model.dart';
+import '../models/student_view.dart';
 
 class StudentDetailPage extends StatelessWidget {
   final String id;
 
-  const StudentDetailPage({super.key, required this.id});
+  const StudentDetailPage({
+    super.key,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
-    /// Provider
+    /// PROVIDER
     final provider = context.watch<StudentProvider>();
 
-    /// Convertir id a int
+    /// CONVERTIR ID
     final studentId = int.tryParse(id);
 
-    /// Buscar estudiante
-    final Student? student =
-        studentId != null ? provider.getById(studentId) : null;
+    /// BUSCAR STUDENT VIEW
+    StudentView? studentView;
 
-    /// Si no existe
-    if (student == null) {
+    if (studentId != null) {
+      try {
+        studentView = provider.students.firstWhere(
+          (s) => s.student.id == studentId,
+        );
+      } catch (e) {
+        studentView = null;
+      }
+    }
+
+    /// SI NO EXISTE
+    if (studentView == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Nuevo Estudiante')),
-        body: const Center(child: Text('Estudiante no encontrado')),
+        appBar: AppBar(
+          title: const Text('Nuevo Estudiante'),
+        ),
+        body: const Center(
+          child: Text('Estudiante no encontrado'),
+        ),
       );
     }
 
+    final student = studentView.student;
+    final career = studentView.career;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('${student.firstName} ${student.lastName}'),
+        title: Text(
+          '${student.firstName} ${student.lastName}',
+        ),
+
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
+
             onPressed: () async {
               final result = await context.push(
                 '/students/form',
                 extra: student,
               );
 
-              if (result == true) {
+              if (result == true && context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Estudiante actualizado'),
+                    content: Text(
+                      'Estudiante actualizado',
+                    ),
                   ),
                 );
               }
@@ -53,20 +78,30 @@ class StudentDetailPage extends StatelessWidget {
           ),
         ],
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+
           children: [
             /// FOTO
             CircleAvatar(
               radius: 60,
-              backgroundImage: student.photoUrl.isNotEmpty
-                  ? AssetImage(student.photoUrl)
-                  : null,
-              child: student.photoUrl.isEmpty
-                  ? const Icon(Icons.person, size: 60)
-                  : null,
+
+              backgroundImage:
+                  student.photoUrl.isNotEmpty
+                      ? AssetImage(student.photoUrl)
+                      : null,
+
+              child:
+                  student.photoUrl.isEmpty
+                      ? const Icon(
+                          Icons.person,
+                          size: 60,
+                        )
+                      : null,
             ),
 
             const SizedBox(height: 20),
@@ -74,7 +109,11 @@ class StudentDetailPage extends StatelessWidget {
             /// NOMBRE
             Text(
               '${student.firstName} ${student.lastName}',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
             const SizedBox(height: 10),
@@ -82,14 +121,43 @@ class StudentDetailPage extends StatelessWidget {
             /// CÓDIGO
             Text(
               'Código: ${student.code}',
-              style: const TextStyle(fontSize: 16),
+
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            /// CARRERA
+            Chip(
+              avatar: const Icon(Icons.school),
+
+              label: Text(
+                career.name,
+              ),
             ),
 
             const Divider(height: 30),
 
-            _infoTile(Icons.badge, "Género", student.gender),
-            _infoTile(Icons.email, "Email", student.email),
-            _infoTile(Icons.phone, "Teléfono", student.phone),
+            _infoTile(
+              Icons.badge,
+              "Género",
+              student.gender,
+            ),
+
+            _infoTile(
+              Icons.email,
+              "Email",
+              student.email,
+            ),
+
+            _infoTile(
+              Icons.phone,
+              "Teléfono",
+              student.phone,
+            ),
+
             _infoTile(
               Icons.cake,
               "Fecha nacimiento",
@@ -98,13 +166,17 @@ class StudentDetailPage extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            /// BOTÓN CHAT
+            /// CHAT
             FilledButton.icon(
               onPressed: () {
                 context.push('/chat');
               },
+
               icon: const Icon(Icons.chat),
-              label: const Text('Abrir Chat'),
+
+              label: const Text(
+                'Abrir Chat',
+              ),
             ),
           ],
         ),
@@ -113,13 +185,20 @@ class StudentDetailPage extends StatelessWidget {
   }
 }
 
-/// Widget reutilizable
+/// ======================
+/// INFO TILE
+/// ======================
+
 class _infoTile extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
 
-  const _infoTile(this.icon, this.label, this.value);
+  const _infoTile(
+    this.icon,
+    this.label,
+    this.value,
+  );
 
   @override
   Widget build(BuildContext context) {
