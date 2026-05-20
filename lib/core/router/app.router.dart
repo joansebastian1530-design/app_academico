@@ -1,3 +1,4 @@
+import 'package:app_academico/features/welcome/welcome.page.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:app_academico/features/student/models/student.model.dart';
@@ -29,6 +30,14 @@ final GoRouter appRouter = GoRouter(
       },
 
       routes: [
+        /// Assets
+        GoRoute(
+      path: '/',
+      builder: (context, state) {
+        return const WelcomePage();
+      },
+    ),
+ 
         /// HOME
         GoRoute(
           path: '/home',
