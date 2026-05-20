@@ -12,7 +12,6 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-
   @override
   void initState() {
     super.initState();
@@ -43,11 +42,9 @@ class _WelcomePageState extends State<WelcomePage> {
             end: Alignment.bottomCenter,
           ),
         ),
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             /// LOGO
             Image.asset(
               AppAssets.logo,

@@ -1,5 +1,8 @@
-import 'package:app_academico/features/welcome/welcome.page.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:app_academico/app/app.shell.widget.dart';
+
+import 'package:app_academico/features/welcome/welcome.page.dart';
 
 import 'package:app_academico/features/student/models/student.model.dart';
 
@@ -15,29 +18,32 @@ import 'package:app_academico/pages/home.page.dart';
 import 'package:app_academico/pages/profile.page.dart';
 import 'package:app_academico/pages/subject.chat.page.dart';
 
-import 'package:app_academico/widgets/app.shell.widget.dart';
-
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/home',
+  /// INICIA EN WELCOME
+  initialLocation: '/',
 
   routes: [
     /// ===================================
-    /// SHELL
+    /// WELCOME
     /// ===================================
-    ShellRoute(
-      builder: (context, state, child) {
-        return AppShellWidget(child: child);
-      },
-
-      routes: [
-        /// Assets
-        GoRoute(
+    GoRoute(
       path: '/',
       builder: (context, state) {
         return const WelcomePage();
       },
     ),
- 
+
+    /// ===================================
+    /// SHELL
+    /// ===================================
+    ShellRoute(
+      builder: (context, state, child) {
+        return AppShellWidget(
+          child: child,
+        );
+      },
+
+      routes: [
         /// HOME
         GoRoute(
           path: '/home',
@@ -81,7 +87,10 @@ final GoRouter appRouter = GoRouter(
       path: '/student/:id',
       builder: (context, state) {
         final id = state.pathParameters['id']!;
-        return StudentDetailPage(id: id);
+
+        return StudentDetailPage(
+          id: id,
+        );
       },
     ),
 
@@ -90,7 +99,10 @@ final GoRouter appRouter = GoRouter(
       path: '/students/form',
       builder: (context, state) {
         final student = state.extra as Student?;
-        return StudentsFormPage(student: student);
+
+        return StudentsFormPage(
+          student: student,
+        );
       },
     ),
 
@@ -99,7 +111,10 @@ final GoRouter appRouter = GoRouter(
       path: '/subject/:id',
       builder: (context, state) {
         final id = state.pathParameters['id']!;
-        return SubjectDetailPage(id: id);
+
+        return SubjectDetailPage(
+          id: id,
+        );
       },
     ),
 

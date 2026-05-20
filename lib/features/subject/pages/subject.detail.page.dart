@@ -1,3 +1,4 @@
+import 'package:app_academico/widgets/infot.title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -91,37 +92,37 @@ class SubjectDetailPage extends StatelessWidget {
 
             const Divider(height: 30),
 
-            _infoTile(
+            infoTile(
               Icons.code,
               "Código",
               subject.code,
             ),
 
-            _infoTile(
+            infoTile(
               Icons.credit_score,
               "Créditos",
               subject.credits.toString(),
             ),
 
-            _infoTile(
+            infoTile(
               Icons.access_time,
               "Horas",
               subject.hours.toString(),
             ),
 
-            _infoTile(
+            infoTile(
               Icons.account_balance,
               "Área de conocimiento",
               subject.knowledgeArea,
             ),
 
-            _infoTile(
+            infoTile(
               Icons.school,
               "Carrera",
               subject.career,
             ),
 
-            _infoTile(
+            infoTile(
               Icons.layers,
               "Nivel",
               subject.level,
@@ -133,26 +134,3 @@ class SubjectDetailPage extends StatelessWidget {
   }
 }
 
-/// WIDGET REUTILIZABLE
-class _infoTile extends StatelessWidget {
-
-  final IconData icon;
-  final String label;
-  final String value;
-
-  const _infoTile(
-    this.icon,
-    this.label,
-    this.value,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(label),
-      subtitle: Text(value),
-    );
-  }
-}

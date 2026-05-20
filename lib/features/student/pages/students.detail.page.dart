@@ -1,3 +1,4 @@
+import 'package:app_academico/widgets/infot.title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -140,25 +141,25 @@ class StudentDetailPage extends StatelessWidget {
 
             const Divider(height: 30),
 
-            _infoTile(
+            infoTile(
               Icons.badge,
               "Género",
               student.gender,
             ),
 
-            _infoTile(
+            infoTile(
               Icons.email,
               "Email",
               student.email,
             ),
 
-            _infoTile(
+            infoTile(
               Icons.phone,
               "Teléfono",
               student.phone,
             ),
 
-            _infoTile(
+            infoTile(
               Icons.cake,
               "Fecha nacimiento",
               "${student.birthDate.day}/${student.birthDate.month}/${student.birthDate.year}",
@@ -181,31 +182,6 @@ class StudentDetailPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-/// ======================
-/// INFO TILE
-/// ======================
-
-class _infoTile extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
-
-  const _infoTile(
-    this.icon,
-    this.label,
-    this.value,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(label),
-      subtitle: Text(value),
     );
   }
 }
