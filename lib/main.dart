@@ -1,12 +1,23 @@
 import 'package:app_academico/features/carrer/providers/career.provider.dart';
-import 'package:app_academico/features/student/subject/providers/subject.provider.dart';
+
+import 'package:app_academico/features/subject/providers/subject.provider.dart';
 import 'package:flutter/material.dart';
 import 'app/app.widget.dart';
 import 'package:provider/provider.dart';
 
 import 'features/student/providers/student.provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+
+  /// NECESARIO para Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /// Inicializar Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiProvider(
       providers: [
