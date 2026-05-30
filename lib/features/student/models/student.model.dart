@@ -1,78 +1,83 @@
-// To parse this JSON data, do
-//
-//     final student = studentFromJson(jsonString);
-
 import 'dart:convert';
 
-StudentResponse studentFromJson(String str) => StudentResponse.fromJson(json.decode(str));
+StudentResponse studentFromJson(String str) =>
+    StudentResponse.fromJson(json.decode(str));
 
-String studentToJson(StudentResponse data) => json.encode(data.toJson());
+String studentToJson(StudentResponse data) =>
+    json.encode(data.toJson());
 
 class StudentResponse {
-    List<Student> students;
+  List<Student> students;
 
-    StudentResponse({
-        required this.students,
-    });
+  StudentResponse({
+    required this.students,
+  });
 
-    factory StudentResponse.fromJson(Map<String, dynamic> json) => StudentResponse(
-        students: List<Student>.from(json["students"].map((x) => Student.fromJson(x))),
-    );
+  factory StudentResponse.fromJson(Map<String, dynamic> json) =>
+      StudentResponse(
+        students: List<Student>.from(
+          json["students"].map((x) => Student.fromJson(x)),
+        ),
+      );
 
-    Map<String, dynamic> toJson() => {
-        "students": List<dynamic>.from(students.map((x) => x.toJson())),
-    };
+  Map<String, dynamic> toJson() => {
+        "students": List<dynamic>.from(
+          students.map((x) => x.toJson()),
+        ),
+      };
 }
 
 class Student {
-    int id;
-    String code;
-    String firstName;
-    String lastName;
-    String gender;
-    int careerId;
-    DateTime birthDate;
-    String email;
-    String phone;
-    String photoUrl;
+  int id;
+  String code;
+  String firstName;
+  String lastName;
+  String gender;
 
-    Student({
-        required this.id,
-        required this.code,
-        required this.firstName,
-        required this.lastName,
-        required this.careerId,
-        required this.gender,
-        required this.birthDate,
-        required this.email,
-        required this.phone,
-        required this.photoUrl,
-    });
+  /// CAMBIO AQUÍ
+  int academicProgramId;
 
-    factory Student.fromJson(Map<String, dynamic> json) => Student(
-        id: json["id"],
-        code: json["code"],
-        firstName: json["firstName"],
-        lastName: json["lastName"],
-        careerId: json["careerId"],
-        gender: json["gender"],
+  DateTime birthDate;
+  String email;
+  String phone;
+  String photoUrl;
+
+  Student({
+    required this.id,
+    required this.code,
+    required this.firstName,
+    required this.lastName,
+    required this.academicProgramId,
+    required this.gender,
+    required this.birthDate,
+    required this.email,
+    required this.phone,
+    required this.photoUrl,
+  });
+
+  factory Student.fromJson(Map<String, dynamic> json) => Student(
+        id: json["id"] ?? 0,
+        code: json["code"] ?? '',
+        firstName: json["firstName"] ?? '',
+        lastName: json["lastName"] ?? '',
+        academicProgramId: json["academicProgramId"] ?? 0,
+        gender: json["gender"] ?? '',
         birthDate: DateTime.parse(json["birthDate"]),
-        email: json["email"],
-        phone: json["phone"],
-        photoUrl: json["photoUrl"],
-    );
+        email: json["email"] ?? '',
+        phone: json["phone"] ?? '',
+        photoUrl: json["photoUrl"] ?? '',
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "code": code,
         "firstName": firstName,
         "lastName": lastName,
-        "careerId": careerId,
+        "academicProgramId": academicProgramId,
         "gender": gender,
-        "birthDate": "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",
+        "birthDate": birthDate.toIso8601String(),
         "email": email,
         "phone": phone,
         "photoUrl": photoUrl,
-    };
+      };
 }
-

@@ -1,12 +1,13 @@
-import 'package:app_academico/features/carrer/models/career.model.dart';
+// lib/features/students/models/student.view.dart
+import '../../academic_program/model/academic.program.model.dart';
 import 'student.model.dart';
 
 class StudentView {
   final Student student;
-  final Career career;
+  final AcademicProgram academicProgram;
 
   StudentView({
     required this.student,
-    required this.career,
+    required this.academicProgram,
   });
 }

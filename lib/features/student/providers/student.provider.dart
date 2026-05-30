@@ -1,103 +1,61 @@
+import 'package:app_academico/features/student/models/student_view.dart';
 import 'package:flutter/material.dart';
-
-import '../../carrer/repositories/career.repository.dart';
-
+import '../../academic_program/repositories/academic.program.repository.dart';
 import '../models/student.model.dart';
-import '../models/student_view.dart';
 
 import '../repositories/student.repository.dart';
 
 class StudentProvider extends ChangeNotifier {
-
-  final StudentRepository _studentRepo =
-      StudentRepository();
-
-  final CareerRepository _careerRepo =
-      CareerRepository();
-
+  final StudentRepository _repository = StudentRepository();
+  final AcademicProgramRepository _acadProgramRepository =
+      AcademicProgramRepository();
   List<StudentView> _students = [];
-
   List<StudentView> get students => _students;
 
-  /// =========================
-  /// LOAD STUDENTS
-  /// =========================
-  void loadStudents() {
-
-    final students =
-        _studentRepo.getAll();
-
-    final careers =
-        _careerRepo.getAll();
-
+  /// ============================
+  /// INIT
+  /// ============================
+  Future<void> loadStudents() async {
+    final students = await _repository.getAll();
+    final careers = await _acadProgramRepository.getAll();
     _students = students.map((student) {
-
-      final career = careers.firstWhere(
-        (c) => c.id == student.careerId,
+      final academicProgram = careers.firstWhere(
+        (c) => c.id == student.academicProgramId,
+        orElse: () => throw Exception('Academic Program not found'),
       );
-
-      return StudentView(
-        student: student,
-        career: career,
-      );
-
+      return StudentView(student: student, academicProgram: academicProgram);
     }).toList();
-
     notifyListeners();
   }
 
-  /// =========================
-  /// INSERT
-  /// =========================
-  void addStudent(Student student) {
-
-    _studentRepo.add(student);
-
-    loadStudents();
+  /// ============================
+  /// CREATE
+  /// ============================
+  Future<void> addStudent(Student student) async {
+    await _repository.add(student);
+    await loadStudents();
   }
 
-  /// =========================
+  /// ============================
   /// UPDATE
-  /// =========================
-  void updateStudent(Student student) {
-
-    _studentRepo.update(student);
-
-    loadStudents();
+  /// ============================
+  Future<void> updateStudent(Student student) async {
+    await _repository.update(student);
+    await loadStudents();
   }
 
-  /// =========================
+  /// ============================
   /// DELETE
-  /// =========================
-  void deleteStudent(int id) {
-
-    _studentRepo.delete(id);
-
-    loadStudents();
+  /// ============================
+  Future<void> deleteStudent(int id) async {
+    await _repository.delete(id);
+    await loadStudents();
   }
 
-  /// =========================
-  /// GET ENTITY
-  /// =========================
-  Student? getById(int id) {
-
-    return _studentRepo.getById(id);
-  }
-
-  /// =========================
-  /// GET VIEW MODEL
-  /// =========================
-  StudentView? getViewById(int id) {
-
-    try {
-
-      return _students.firstWhere(
-        (s) => s.student.id == id,
-      );
-
-    } catch (e) {
-
-      return null;
-    }
+  /// ============================
+  /// GET BY ID
+  /// ============================
+  Future<Student?> getById(int id) async {
+    return await _repository.getById(id);
   }
 }

@@ -2,53 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
-import '../providers/student.provider.dart';
+import '../providers/document.provider.dart';
 
-class StudentsPage extends StatelessWidget {
-  const StudentsPage({super.key});
+class DocumentsPage extends StatelessWidget {
+  const DocumentsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    /// ESCUCHA EL PROVIDER
-    final students = context.watch<StudentProvider>().students;
+    final documents = context.watch<DocumentProvider>().documents;
 
-    if (students.isEmpty) {
+    if (documents.isEmpty) {
       return const Center(
-        child: Text("No hay estudiantes"),
+        child: Text("No hay documentos"),
       );
     }
 
     return GridView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: students.length,
+      itemCount: documents.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
+        crossAxisCount: 3, 
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        childAspectRatio: 0.75,
+        childAspectRatio: 0.75, 
       ),
       itemBuilder: (context, index) {
-        final student = students[index];
+        final document = documents[index];
 
-        return StudentCard(
-            nombre: "${student.student.firstName} ${student.student.lastName}",
-            id: student.student.id);
+        return _DocumentCard(
+          numeroDoc: document.documentNumber,
+          titulo: document.title,
+          id: document.id,
+        );
       },
     );
   }
 }
 
-class StudentCard extends StatelessWidget {
-  final String nombre;
+class _DocumentCard extends StatelessWidget {
+  final String numeroDoc;
+  final String titulo;
   final int id;
 
-  const StudentCard({required this.nombre, required this.id});
+  const _DocumentCard({
+    required this.numeroDoc,
+    required this.titulo,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push("/student/$id");
+        context.push("/document/$id");
       },
       child: Card(
         elevation: 4,
@@ -56,7 +62,6 @@ class StudentCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            /// FOTO
             Expanded(
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(
@@ -64,9 +69,9 @@ class StudentCard extends StatelessWidget {
                 ),
                 child: Container(
                   width: double.infinity,
-                  color: Colors.indigo.shade100,
+                  color: Colors.indigo.shade100, 
                   child: const Icon(
-                    Icons.person,
+                    Icons.description, 
                     size: 70,
                     color: Colors.indigo,
                   ),
@@ -74,22 +79,26 @@ class StudentCard extends StatelessWidget {
               ),
             ),
 
-            /// INFORMACIÓN
             Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
                 children: [
                   Text(
-                    nombre,
+                    titulo,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'Estudiante',
-                    style: TextStyle(color: Colors.grey),
+                  Text(
+                    numeroDoc,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),
