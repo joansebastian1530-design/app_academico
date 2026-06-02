@@ -1,39 +1,65 @@
-import 'package:app_academico/features/carrer/providers/career.provider.dart';
-import 'package:app_academico/features/documents/providers/document.provider.dart';
-import 'package:app_academico/features/student/providers/student.provider.dart';
-import 'package:app_academico/features/subject/providers/subject.provider.dart';
+import 'package:app_academico/features/academic_program/providers/academic.program.provider.dart';
+import 'package:app_academico/features/login/providers/auth.provider.dart';
+import 'package:app_academico/features/user/providers/user.provider.dart';
 import 'package:app_academico/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'app/app.widget.dart';
 import 'package:provider/provider.dart';
 
-void main() async{
-  /// NECESARIO para Firebase
+import 'app/app.startup.dart';
+import 'app/app.widget.dart';
+
+import 'features/student/providers/student.provider.dart';
+import 'features/subject/providers/subject.provider.dart';
+
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// Inicializar Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
     MultiProvider(
       providers: [
+        /// ============================
+        /// STUDENTS
+        /// ============================
         ChangeNotifierProvider(
           create: (_) => StudentProvider()..loadStudents(),
         ),
+
+        /// ============================
+        /// SUBJECTS
+        /// ============================
         ChangeNotifierProvider(
           create: (_) => SubjectProvider()..loadSubjects(),
         ),
+
+        /// ============================
+        /// ACADEMIC PROGRAMS
+        /// ============================
         ChangeNotifierProvider(
-          create: (_) => DocumentProvider()..loadDocuments(),
+          create: (_) => AcademicProgramProvider()..loadAcademicPrograms(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => CareerProvider()..loadCareers(),
+
+        /// ============================
+        /// CURRENT USER
+        /// ============================
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+
+        /// ============================
+        /// AUTHENTICATION
+        /// ============================
+        ChangeNotifierProxyProvider<UserProvider, AuthProvider>(
+          create: (context) =>
+              AuthProvider(userProvider: context.read<UserProvider>()),
+
+          update: (context, userProvider, previous) =>
+              previous ?? AuthProvider(userProvider: userProvider),
         ),
       ],
-      child: const AppWidget(),
+
+      child: const AppStartup(child: AppWidget()),
     ),
   );
 }
