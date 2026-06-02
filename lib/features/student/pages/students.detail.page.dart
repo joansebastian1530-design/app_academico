@@ -16,7 +16,7 @@ class StudentDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.read<StudentProvider>();
     final providerAcademic = context.read<AcademicProgramProvider>();
-    final studentId = int.tryParse(id);
+    final studentId = id;
     if (studentId == null) {
       return const Scaffold(body: Center(child: Text('ID inválido')));
     }

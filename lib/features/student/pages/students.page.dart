@@ -32,7 +32,7 @@ class StudentsPage extends StatelessWidget {
 
         return StudentCard(
             nombre: "${student.student.firstName} ${student.student.lastName}",
-            id: student.student.id);
+            id: student.student.id!);
       },
     );
   }
@@ -40,7 +40,7 @@ class StudentsPage extends StatelessWidget {
 
 class StudentCard extends StatelessWidget {
   final String nombre;
-  final int id;
+  final String id;
 
   const StudentCard({required this.nombre, required this.id});
 
