@@ -20,7 +20,7 @@ GoRouter createRouter(AuthProvider authProvider) {
   return GoRouter(
     initialLocation: '/',
 
-    refreshListenable: authProvider,
+       refreshListenable: authProvider,
 
     redirect: (context, state) {
       final isLoggedIn = authProvider.isAuthenticated;

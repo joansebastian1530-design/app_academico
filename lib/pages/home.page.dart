@@ -1,10 +1,13 @@
+import 'package:app_academico/features/user/providers/user.provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().currentUser!;
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -14,11 +17,11 @@ class HomePage extends StatelessWidget {
             color: Colors.indigo.shade100,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Bienvenido',
+                "Bienvenido ${user.firstName}",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),

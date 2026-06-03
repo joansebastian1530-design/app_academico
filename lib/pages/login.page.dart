@@ -1,6 +1,8 @@
+import 'package:app_academico/features/login/providers/auth.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,29 +15,45 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  bool isLoading = false;
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
-  void login() async {
-    setState(() => isLoading = true);
+  Future<void> login() async {
+    try {
+      await context.read<AuthProvider>().login(
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      );
 
-    await Future.delayed(const Duration(milliseconds: 800));
+      if (!mounted) return;
 
-    if (!mounted) return;
+      context.go('/home');
+    } catch (e) {
+      if (!mounted) return;
 
-    setState(() => isLoading = false);
-
-    // 🔥 ENTRA SIN BLOQUEOS
-    context.go('/home');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // 🔵 HEADER
+            // HEADER
             Container(
               height: 320,
               width: double.infinity,
@@ -45,6 +63,8 @@ class _LoginPageState extends State<LoginPage> {
                     Color.fromRGBO(143, 148, 251, 1),
                     Color.fromRGBO(143, 148, 251, .7),
                   ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
               ),
               child: Column(
@@ -76,15 +96,17 @@ class _LoginPageState extends State<LoginPage> {
 
             const SizedBox(height: 30),
 
-            // 🔵 FORM
+            // FORMULARIO
             Padding(
               padding: const EdgeInsets.all(25),
               child: Column(
                 children: [
                   TextField(
                     controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: "Correo",
+                      prefixIcon: const Icon(Icons.email_outlined),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -98,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Contraseña",
+                      prefixIcon: const Icon(Icons.lock_outline),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -106,28 +129,36 @@ class _LoginPageState extends State<LoginPage> {
 
                   const SizedBox(height: 25),
 
-                  GestureDetector(
-                    onTap: isLoading ? null : login,
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromRGBO(143, 148, 251, 1),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed:
+                          authProvider.isLoading ? null : login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromRGBO(143, 148, 251, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
-                      child: Center(
-                        child: isLoading
-                            ? const CircularProgressIndicator(
+                      child: authProvider.isLoading
+                          ? const SizedBox(
+                              width: 22,
+                              height: 22,
+                              child: CircularProgressIndicator(
                                 color: Colors.white,
-                              )
-                            : const Text(
-                                "Iniciar Sesión",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                strokeWidth: 2.5,
                               ),
-                      ),
+                            )
+                          : const Text(
+                              "Iniciar Sesión",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                     ),
                   ),
                 ],

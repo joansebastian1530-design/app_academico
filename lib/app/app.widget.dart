@@ -1,10 +1,10 @@
+import 'package:app_academico/features/login/providers/auth.provider.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../core/router/app.router.dart';
-import '../features/login/providers/auth.provider.dart';
+
 
 class AppWidget extends StatefulWidget {
   const AppWidget({super.key});
@@ -14,11 +14,11 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  late GoRouter router;
+  late final router;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
 
     final authProvider = context.read<AuthProvider>();
 
@@ -35,10 +35,7 @@ class _AppWidgetState extends State<AppWidget> {
 
       themeMode: ThemeMode.system,
 
-      theme: FlexThemeData.light(
-        scheme: FlexScheme.blueM3,
-        useMaterial3: true,
-      ),
+      theme: FlexThemeData.light(scheme: FlexScheme.blueM3, useMaterial3: true),
 
       darkTheme: FlexThemeData.dark(
         scheme: FlexScheme.outerSpace,
@@ -47,3 +44,5 @@ class _AppWidgetState extends State<AppWidget> {
     );
   }
 }
+
+
