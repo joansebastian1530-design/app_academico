@@ -1,6 +1,8 @@
 import 'package:app_academico/features/academic_program/providers/academic.program.provider.dart';
+import 'package:app_academico/features/carrera/providers/carrera.provider.dart';
 import 'package:app_academico/features/documents/providers/document.provider.dart';
 import 'package:app_academico/features/login/providers/auth.provider.dart';
+import 'package:app_academico/features/students/providers/student.provider.dart';
 import 'package:app_academico/features/user/providers/user.provider.dart';
 import 'package:app_academico/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'app/app.startup.dart';
 import 'app/app.widget.dart';
 
-import 'features/student/providers/student.provider.dart';
 import 'features/subject/providers/subject.provider.dart';
 
 
@@ -43,6 +44,9 @@ ChangeNotifierProvider(
         /// ============================
         ChangeNotifierProvider(
           create: (_) => AcademicProgramProvider()..loadAcademicPrograms(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CarreraProvider()..loadCareers(),
         ),
 
         /// ============================

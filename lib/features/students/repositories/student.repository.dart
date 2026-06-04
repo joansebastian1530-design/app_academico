@@ -12,15 +12,13 @@ class StudentRepository {
     final snapshot = await _firestore.collection(_collection).get();
     return snapshot.docs.map((doc) {
       final data = doc.data();
-      return Student.fromJson({
-        ...data,
-        /// Convertir timestamp a string
-        'birthDate': (data['birthDate'] as Timestamp)
-            .toDate()
-            .toIso8601String(),
-      },
-      id: doc.id,
-      
+      return Student.fromJson(
+        {
+          ...data,
+          'birthDate':
+              (data['birthDate'] as Timestamp).toDate().toIso8601String(),
+        },
+        id: doc.id, // AQUÍ está el ID real
       );
     }).toList();
   }
@@ -38,7 +36,6 @@ class StudentRepository {
     }, id: doc.id);
   }
 
-
   /// ============================
   /// INSERT
   /// ============================
@@ -52,21 +49,17 @@ class StudentRepository {
   /// ============================
   /// UPDATE
   /// ============================
- Future<void> update(Student student) async {
+  Future<void> update(Student student) async {
     await _firestore.collection(_collection).doc(student.id).update({
       ...student.toJson(),
       'birthDate': Timestamp.fromDate(student.birthDate),
     });
   }
 
-
   /// ============================
   /// DELETE
   /// ============================
-    Future<void> delete(String id) async {
+  Future<void> delete(String id) async {
     await _firestore.collection(_collection).doc(id).delete();
   }
-
 }
-
-

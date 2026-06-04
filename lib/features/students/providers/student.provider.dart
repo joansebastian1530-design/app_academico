@@ -1,9 +1,9 @@
-import 'package:app_academico/features/student/models/student_view.dart';
+import 'package:app_academico/features/academic_program/model/academic.program.model.dart';
 import 'package:flutter/material.dart';
-import '../../academic_program/repositories/academic.program.repository.dart';
 import '../models/student.model.dart';
-
+import '../models/student.view.dart';
 import '../repositories/student.repository.dart';
+import '../../academic_program/repositories/academic.program.repository.dart';
 
 class StudentProvider extends ChangeNotifier {
   final StudentRepository _repository = StudentRepository();
@@ -21,7 +21,7 @@ class StudentProvider extends ChangeNotifier {
     _students = students.map((student) {
       final academicProgram = careers.firstWhere(
         (c) => c.id == student.academicProgramId,
-        orElse: () => throw Exception('Academic Program not found'),
+        orElse: () => AcademicProgram(id: 0, name: 'Sin carrera'),
       );
       return StudentView(student: student, academicProgram: academicProgram);
     }).toList();

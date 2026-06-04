@@ -1,9 +1,13 @@
+// To parse this JSON data, do
+//
+// final studentResponse = studentResponseFromJson(jsonString);
+
 import 'dart:convert';
 
-StudentResponse studentFromJson(String str) =>
+StudentResponse studentResponseFromJson(String str) =>
     StudentResponse.fromJson(json.decode(str));
 
-String studentToJson(StudentResponse data) =>
+String studentResponseToJson(StudentResponse data) =>
     json.encode(data.toJson());
 
 class StudentResponse {
@@ -32,11 +36,11 @@ class Student {
   String code;
   String firstName;
   String lastName;
-  String gender;
 
-  /// CAMBIO AQUÍ
+  /// RELACIÓN CON ACADEMIC PROGRAM
   int academicProgramId;
 
+  String gender;
   DateTime birthDate;
   String email;
   String phone;
@@ -57,15 +61,18 @@ class Student {
 
   factory Student.fromJson(Map<String, dynamic> json, {String? id}) => Student(
         id: id,
-        code: json["code"] ?? '',
-        firstName: json["firstName"] ?? '',
-        lastName: json["lastName"] ?? '',
-        academicProgramId: json["academicProgramId"] ?? 0,
-        gender: json["gender"] ?? '',
+        code: json["code"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+
+        /// FIREBASE
+        academicProgramId: json["academicProgramId"] ?? 1,
+
+        gender: json["gender"],
         birthDate: DateTime.parse(json["birthDate"]),
-        email: json["email"] ?? '',
-        phone: json["phone"] ?? '',
-        photoUrl: json["photoUrl"] ?? '',
+        email: json["email"],
+        phone: json["phone"],
+        photoUrl: json["photoUrl"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -73,9 +80,14 @@ class Student {
         "code": code,
         "firstName": firstName,
         "lastName": lastName,
+
+        /// FIREBASE
         "academicProgramId": academicProgramId,
+
         "gender": gender,
-        "birthDate": birthDate.toIso8601String(),
+        "birthDate": "${birthDate.year.toString().padLeft(4, '0')}-"
+            "${birthDate.month.toString().padLeft(2, '0')}-"
+            "${birthDate.day.toString().padLeft(2, '0')}",
         "email": email,
         "phone": phone,
         "photoUrl": photoUrl,

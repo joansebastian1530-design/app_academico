@@ -2,7 +2,6 @@ import 'package:app_academico/widgets/infot.title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../academic_program/model/academic.program.model.dart';
 import '../../academic_program/providers/academic.program.provider.dart';
 import '../models/student.model.dart';

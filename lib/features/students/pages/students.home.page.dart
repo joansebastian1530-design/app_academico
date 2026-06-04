@@ -1,5 +1,4 @@
-import 'package:app_academico/features/student/pages/students.page.dart';
-
+import 'package:app_academico/features/students/pages/students.page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +18,7 @@ class StudentsHomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await context.push(
-            '/student/home',
+            '/student/form',
             extra: null,
           );
 

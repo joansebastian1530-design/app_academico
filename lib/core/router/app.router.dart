@@ -1,19 +1,28 @@
-import 'package:app_academico/app/app.shell.widget.dart';
-import 'package:app_academico/features/documents/pages/documents.page.dart';
-import 'package:app_academico/features/login/pages/login.page.dart';
-import 'package:app_academico/features/login/pages/register.page.dart';
-import 'package:app_academico/features/login/providers/auth.provider.dart';
-import 'package:app_academico/features/student/models/student.model.dart';
-import 'package:app_academico/features/student/pages/students.detail.page.dart';
-import 'package:app_academico/features/student/pages/students.form.page.dart';
-import 'package:app_academico/features/student/pages/students.home.page.dart';
+
+import 'package:app_academico/features/students/models/student.model.dart';
+import 'package:app_academico/features/students/pages/students.detail.page.dart';
+import 'package:app_academico/features/students/pages/students.form.page.dart';
+import 'package:app_academico/features/students/pages/students.home.page.dart';
 import 'package:app_academico/features/subject/pages/subject.detail.page.dart';
 import 'package:app_academico/features/subject/pages/subject.page.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:app_academico/app/app.shell.widget.dart';
+
+import 'package:app_academico/features/login/providers/auth.provider.dart';
+import 'package:app_academico/features/login/pages/login.page.dart';
+import 'package:app_academico/features/login/pages/register.page.dart';
+
 import 'package:app_academico/features/welcome/welcome.page.dart';
-import 'package:app_academico/pages/chat.page.dart';
+
 import 'package:app_academico/pages/home.page.dart';
 import 'package:app_academico/pages/profile.page.dart';
-import 'package:go_router/go_router.dart';
+import 'package:app_academico/pages/chat.page.dart';
+
+import 'package:app_academico/features/documents/models/document.model.dart';
+import 'package:app_academico/features/documents/pages/documents.home.page.dart';
+import 'package:app_academico/features/documents/pages/documents.form.page.dart';
+import 'package:app_academico/features/documents/pages/documents.detail.page.dart';
 
 GoRouter createRouter(AuthProvider authProvider) {
   return GoRouter(
@@ -46,7 +55,7 @@ GoRouter createRouter(AuthProvider authProvider) {
 
     routes: [
       // =========================
-      // PUBLIC ROUTES
+      // RUTAS PÚBLICAS
       // =========================
 
       GoRoute(
@@ -65,18 +74,30 @@ GoRouter createRouter(AuthProvider authProvider) {
       ),
 
       // =========================
-      // SHELL ROUTES
+      // SHELL
       // =========================
 
       ShellRoute(
         builder: (context, state, child) {
-          return AppShellWidget(child: child);
+          return AppShellWidget(
+            child: child,
+          );
         },
 
         routes: [
           GoRoute(
             path: '/home',
             builder: (context, state) => const HomePage(),
+          ),
+
+          GoRoute(
+            path: '/students',
+            builder: (context, state) => StudentsHomePage(),
+          ),
+
+          GoRoute(
+            path: '/documents',
+            builder: (context, state) => const DocumentsHomePage(),
           ),
 
           GoRoute(
@@ -90,20 +111,21 @@ GoRouter createRouter(AuthProvider authProvider) {
           ),
 
           GoRoute(
-            path: '/documents',
-            builder: (context, state) => const DocumentsPage(),
+            path: '/chat',
+            builder: (context, state) => const ChatPage(),
           ),
 
-          GoRoute(
-            path: '/students',
-            builder: (context, state) => StudentsHomePage(),
-          ),
+          // =========================
+          // STUDENTS
+          // =========================
 
           GoRoute(
             path: '/student/form',
             builder: (context, state) {
               final student = state.extra as Student?;
-              return StudentsFormPage(student: student);
+              return StudentsFormPage(
+                student: student,
+              );
             },
           ),
 
@@ -111,21 +133,53 @@ GoRouter createRouter(AuthProvider authProvider) {
             path: '/student/:id',
             builder: (context, state) {
               final id = state.pathParameters['id']!;
-              return StudentDetailPage(id: id);
+              return StudentDetailPage(
+                id: id,
+              );
             },
           ),
+
+          // =========================
+          // SUBJECTS
+          // =========================
 
           GoRoute(
             path: '/subject/:id',
             builder: (context, state) {
               final id = state.pathParameters['id']!;
-              return SubjectDetailPage(id: id);
+              return SubjectDetailPage(
+                id: id,
+              );
+            },
+          ),
+
+          // =========================
+          // DOCUMENTS
+          // =========================
+
+          GoRoute(
+            path: '/document/form',
+            builder: (context, state) {
+              final document = state.extra as Document?;
+              final studentId =
+                  state.uri.queryParameters['studentId'];
+
+              return DocumentsFormPage(
+                document: document,
+                studentId: studentId,
+              );
             },
           ),
 
           GoRoute(
-            path: '/chat',
-            builder: (context, state) => const ChatPage(),
+            path: '/document/:id',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+
+              return DocumentDetailPage(
+                id: id,
+              );
+            },
           ),
         ],
       ),
