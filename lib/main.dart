@@ -1,4 +1,5 @@
 import 'package:app_academico/features/academic_program/providers/academic.program.provider.dart';
+import 'package:app_academico/features/documents/providers/document.provider.dart';
 import 'package:app_academico/features/login/providers/auth.provider.dart';
 import 'package:app_academico/features/user/providers/user.provider.dart';
 import 'package:app_academico/firebase_options.dart';
@@ -34,7 +35,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => SubjectProvider()..loadSubjects(),
         ),
-
+ChangeNotifierProvider(
+  create: (_) => DocumentProvider()..loadDocuments(),
+),
         /// ============================
         /// ACADEMIC PROGRAMS
         /// ============================

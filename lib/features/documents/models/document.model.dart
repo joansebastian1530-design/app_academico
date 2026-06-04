@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final documentResponse = documentResponseFromJson(jsonString);
-
 import 'dart:convert';
 
 DocumentResponse documentResponseFromJson(String str) =>
@@ -19,8 +15,11 @@ class DocumentResponse {
 
   factory DocumentResponse.fromJson(Map<String, dynamic> json) =>
       DocumentResponse(
-        documents: List<Document>.from(
-            json["documents"].map((x) => Document.fromJson(x))),
+        documents: json["documents"] == null
+            ? []
+            : List<Document>.from(
+                json["documents"].map((x) => Document.fromJson(x)),
+              ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,7 +40,7 @@ class Document {
   String status;
   String priority;
   DateTime createdAt;
-  DateTime? approvedAt; 
+  DateTime? approvedAt;
   List<String> attachments;
   String verificationCode;
 
@@ -64,21 +63,25 @@ class Document {
   });
 
   factory Document.fromJson(Map<String, dynamic> json) => Document(
-        id: json["id"],
-        documentNumber: json["documentNumber"],
-        type: json["type"],
-        title: json["title"],
-        description: json["description"],
-        studentId: json["studentId"],
-        sender: json["sender"],
-        receiver: json["receiver"],
-        department: json["department"],
-        status: json["status"],
-        priority: json["priority"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        approvedAt: json["approvedAt"] != null ? DateTime.parse(json["approvedAt"]) : null,
-        attachments: List<String>.from(json["attachments"].map((x) => x)),
-        verificationCode: json["verificationCode"],
+        id: _toInt(json["id"]),
+        documentNumber: json["documentNumber"] ?? '',
+        type: json["type"] ?? '',
+        title: json["title"] ?? '',
+        description: json["description"] ?? '',
+        studentId: _toInt(json["studentId"]),
+        sender: json["sender"] ?? '',
+        receiver: json["receiver"] ?? '',
+        department: json["department"] ?? '',
+        status: json["status"] ?? '',
+        priority: json["priority"] ?? '',
+        createdAt: DateTime.tryParse(json["createdAt"] ?? '') ?? DateTime.now(),
+        approvedAt: json["approvedAt"] != null
+            ? DateTime.tryParse(json["approvedAt"])
+            : null,
+        attachments: json["attachments"] == null
+            ? []
+            : List<String>.from(json["attachments"].map((x) => x.toString())),
+        verificationCode: json["verificationCode"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -93,12 +96,15 @@ class Document {
         "department": department,
         "status": status,
         "priority": priority,
-        "createdAt":
-            "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",
-        "approvedAt": approvedAt != null
-            ? "${approvedAt!.year.toString().padLeft(4, '0')}-${approvedAt!.month.toString().padLeft(2, '0')}-${approvedAt!.day.toString().padLeft(2, '0')}"
-            : null,
-        "attachments": List<dynamic>.from(attachments.map((x) => x)),
+        "createdAt": createdAt.toIso8601String(),
+        "approvedAt": approvedAt?.toIso8601String(),
+        "attachments": attachments,
         "verificationCode": verificationCode,
       };
+
+  static int _toInt(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    return int.tryParse(value.toString()) ?? 0;
+  }
 }

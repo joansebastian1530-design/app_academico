@@ -1,8 +1,9 @@
-import 'package:app_academico/features/user/providers/user.provider.dart';
-import 'package:app_academico/features/user/repositories/user.repository.dart';
+import 'package:firebase_auth/firebase_auth.dart' as f_auth;
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
+
 import '../../user/models/user.model.dart';
+import '../../user/providers/user.provider.dart';
+import '../../user/repositories/user.repository.dart';
 import '../repositories/auth.repository.dart';
 
 
@@ -30,7 +31,7 @@ class AuthProvider extends ChangeNotifier {
   /// ============================
   /// INIT SESSION
   /// ============================
-   Future<void> initAuth() async {
+  Future<void> initAuth() async {
     final firebaseUser = _authRepository.currentUser;
 
     if (firebaseUser == null) {
@@ -59,7 +60,7 @@ class AuthProvider extends ChangeNotifier {
   /// ============================
   /// LOGIN
   /// ============================
-Future<void> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     _setLoading(true);
 
     try {
@@ -82,7 +83,7 @@ Future<void> login(String email, String password) async {
       _errorMessage = null;
 
       notifyListeners();
-    } on auth.FirebaseAuthException catch (e) {
+    } on f_auth.FirebaseAuthException catch (e) {
       _errorMessage = e.message;
 
       notifyListeners();
@@ -100,6 +101,7 @@ Future<void> login(String email, String password) async {
     _setLoading(true);
 
     try {
+      
       final credential = await _authRepository.register(user.email, password);
 
       final uid = credential.user!.uid;

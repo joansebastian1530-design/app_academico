@@ -1,6 +1,6 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:app_academico/features/login/providers/auth.provider.dart';
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -159,6 +159,42 @@ class _LoginPageState extends State<LoginPage> {
                                 fontSize: 16,
                               ),
                             ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        context.go('/register');
+                      },
+                      child: RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "¿No tienes una cuenta? ",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 13,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "REGÍSTRATE",
+                              style: TextStyle(
+                                color: Color.fromRGBO(
+                                  143,
+                                  148,
+                                  251,
+                                  1,
+                                ),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],

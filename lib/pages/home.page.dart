@@ -7,7 +7,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<UserProvider>().currentUser!;
+      final user =
+        context.watch<UserProvider>().currentUser;
+
+    if (user == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -25,6 +32,16 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
+              CircleAvatar(
+                radius: 40,
+
+                backgroundImage: user.photoUrl.isNotEmpty
+                    ? NetworkImage(user.photoUrl)
+                    : null,
+
+                child: user.photoUrl.isEmpty ? const Icon(Icons.person) : null,
+              ),
+
               Text(
                 'Ejemplo didáctico usando GoRouter + ShellRoute',
                 style: TextStyle(fontSize: 18),
