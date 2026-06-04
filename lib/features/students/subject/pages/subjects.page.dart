@@ -19,43 +19,28 @@ class SubjectsPage extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: subjects.length,
-      itemBuilder: (context, id) {
-        final subject = subjects[id];
+      itemBuilder: (context, index) {
+        final subject = subjects[index];
 
-        return Card(
-          margin: const EdgeInsets.only(bottom: 10),
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: ListTile(
-            leading: const Icon(
-              Icons.book,
-              color: Colors.indigo,
-            ),
-            title: Text(subject.name),
-            subtitle: Text(subject.code),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-            ),
-            onTap: () {
-              context.push('/subject/${subject.id}');
-            },
-          ),
+        return SubjectCard(
+          id: subject.id,
+          nombre: subject.name,
+          codigo: subject.code,
+          carrera: subject.knowledgeArea.career,
         );
       },
     );
   }
 }
 
-class _SubjectCard extends StatelessWidget {
+class SubjectCard extends StatelessWidget {
   final int id;
   final String nombre;
   final String codigo;
   final String carrera;
 
-  const _SubjectCard({
+  const SubjectCard({
+    super.key,
     required this.id,
     required this.nombre,
     required this.codigo,
@@ -69,6 +54,7 @@ class _SubjectCard extends StatelessWidget {
         context.push('/subject/$id');
       },
       child: Card(
+        margin: const EdgeInsets.only(bottom: 12),
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -76,19 +62,18 @@ class _SubjectCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(16),
-                ),
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.indigo.shade100,
-                  child: const Icon(
-                    Icons.book,
-                    size: 70,
-                    color: Colors.indigo,
-                  ),
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
+              child: Container(
+                height: 120,
+                width: double.infinity,
+                color: Colors.indigo.shade100,
+                child: const Icon(
+                  Icons.book,
+                  size: 70,
+                  color: Colors.indigo,
                 ),
               ),
             ),

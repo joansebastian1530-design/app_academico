@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCuewMnajaBMgPI4ID4oP4057sGDr4Njm0',
-    appId: '1:276186497276:android:0f9e6d145c8f45dfca5779',
+    appId: '1:276186497276:android:3cb91b8b7ab2d02eca5779',
     messagingSenderId: '276186497276',
     projectId: 'academico-itsi-f1c88',
     storageBucket: 'academico-itsi-f1c88.firebasestorage.app',
@@ -83,4 +83,5 @@ class DefaultFirebaseOptions {
     authDomain: 'academico-itsi-f1c88.firebaseapp.com',
     storageBucket: 'academico-itsi-f1c88.firebasestorage.app',
   );
+
 }
